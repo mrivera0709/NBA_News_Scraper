@@ -1,116 +1,216 @@
+// ==================================
+// Dependencies
 var express = require("express");
-var bodyParser = require("body-parser");
-var logger = require("morgan");
+var method = require("method-override");
+var body = require("body-parser");
+var exphbs = require("express-handlebars");
 var mongoose = require("mongoose");
+var logger = require("morgan");
+var cheerio = require("cheerio");
+var request = require("request");
 
-var PORT = 3000;
+// ==================================
+// Mongoose
+var Note = require("./models/Note");
+var Article = require("./models/Article");
+var databaseUrl = 'mongodb://localhost/nba';
 
-// Require all models
-var db = require("./models");
+if (process.env.MONGODB_URI) {
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    mongoose.connect(databaseUrl);
+};
 
-// Initialize Express
-var app = express();
-
-// Configure middleware
-
-// Use morgan logger for logging requests
-app.use(logger("dev"));
-// Use body-parser for handling form submissions
-app.use(bodyParser.urlencoded({ extended: false }));
-// Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
-
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/____________", {
-  useMongoClient: true
+var db = mongoose.connection;
+
+db.on("error", function(error) {
+    console.log("Mongoose Error: ", error);
 });
 
-// When the server starts, create and save a new _______ document to the db
-// The "unique" rule in the _______ model's schema will prevent duplicate ________ from being added to the server
-db._______
-  .create({ name: " _______" })
-  .then(function(db_______) {
-    // If saved successfully, print the new _______ document to the console
-    console.log(db_______);
-  })
-  .catch(function(err) {
-    // If an error occurs, print it to the console
-    console.log(err.message);
-  });
+db.once("open", function() {
+    console.log("Mongoose connection successful.");
+});
 
+
+var app = express();
+var port = process.env.PORT || 3000;
+
+// ==================================
+// app set-ups
+app.use(logger("dev"));
+app.use(express.static("public"));
+app.use(body.urlencoded({
+    extended: false
+}));
+app.use(method("_method"));
+app.engine("handlebars", exphbs({
+    defaultLayout: "main"
+}));
+app.set("view engine", "handlebars");
+
+// ==================================
 // Routes
-
-// POST route for saving a new ----- to the db and associating it with a _______
-app.post("/submit", function(req, res) {
-  // Create a new ----- in the database
-  db.-----
-    .create(req.body)
-    .then(function(db-----) {
-      // If a ----- was created successfully, find one _______ (there's only one) and push the new -----'s _id to the _______'s `-----s` array
-      // { new: true } tells the query that we want it to return the updated _______ -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db._______.findOneAndUpdate({}, { $push: { -----s: db-----._id } }, { new: true });
-    })
-    .then(function(db_______) {
-      // If the _______ was updated successfully, send it back to the client
-      res.json(db_______);
-    })
-    .catch(function(err) {
-      // If an error occurs, send it back to the client
-      res.json(err);
+app.get("/", function(req, res) {
+    Article.find({}, null, {
+        sort: {
+            created: -1
+        }
+    }, function(err, data) {
+        if (data.length === 0) {
+            res.render("placeholder", {
+                message: "There's nothing scraped yet. Please click \"Scrape For Newest Articles\" for fresh and delicious news."
+            });
+        } else {
+            res.render("index", {
+                articles: data
+            });
+        }
     });
 });
 
-// Route for getting all -----s from the db
-app.get("/-----s", function(req, res) {
-  // Using our ----- model, "find" every ----- in our db
-  db.-----
-    .find({})
-    .then(function(db-----) {
-      // If any -----s are found, send them to the client
-      res.json(db-----);
-    })
-    .catch(function(err) {
-      // If an error occurs, send it back to the client
-      res.json(err);
+app.get("/scrape", function(req, res) {
+    request("https://www.nytimes.com/section/world", function(error, response, html) {
+        var $ = cheerio.load(html);
+        var result = {};
+        $("div.story-body").each(function(i, element) {
+            var link = $(element).find("a").attr("href");
+            var title = $(element).find("h2.headline").text().trim();
+            var summary = $(element).find("p.summary").text().trim();
+            var img = $(element).parent().find("figure.media").find("img").attr("src");
+            result.link = link;
+            result.title = title;
+            if (summary) {
+                result.summary = summary;
+            };
+            if (img) {
+                result.img = img;
+            } else {
+                result.img = $(element).find(".wide-thumb").find("img").attr("src");
+            };
+            var entry = new Article(result);
+            Article.find({
+                title: result.title
+            }, function(err, data) {
+                if (data.length === 0) {
+                    entry.save(function(err, data) {
+                        if (err) throw err;
+                    });
+                }
+            });
+        });
+        console.log("Scrape finished.");
+        res.redirect("/");
     });
 });
 
-// Route for getting all ________ from the db
-app.get("/_______", function(req, res) {
-  // Using our _______ model, "find" every _______ in our db
-  db._______
-    .find({})
-    .then(function(db_______) {
-      // If any ________ are found, send them to the client
-      res.json(db_______);
-    })
-    .catch(function(err) {
-      // If an error occurs, send it back to the client
-      res.json(err);
+
+app.get("/saved", function(req, res) {
+    Article.find({
+        issaved: true
+    }, null, {
+        sort: {
+            created: -1
+        }
+    }, function(err, data) {
+        if (data.length === 0) {
+            res.render("placeholder", {
+                message: "You have not saved any articles yet. Try to save some delicious news by simply clicking \"Save Article\"!"
+            });
+        } else {
+            res.render("saved", {
+                saved: data
+            });
+        }
     });
 });
 
-// Route to see what _______ looks like WITH populating
-app.get("/populated", function(req, res) {
-  // Using our _______ model, "find" every _______ in our db and populate them with any associated -----s
-  db._______
-    .find({})
-    // Specify that we want to populate the retrieved ________ with any associated -----s
-    .populate("-----s")
-    .then(function(db_______) {
-      // If any ________ are found, send them to the client with any associated -----s
-      res.json(db_______);
+app.get("/:id", function(req, res) {
+    Article.findById(req.params.id, function(err, data) {
+        res.json(data);
     })
-    .catch(function(err) {
-      // If an error occurs, send it back to the client
-      res.json(err);
+})
+
+app.post("/search", function(req, res) {
+    console.log(req.body.search);
+    Article.find({
+        $text: {
+            $search: req.body.search,
+            $caseSensitive: false
+        }
+    }, null, {
+        sort: {
+            created: -1
+        }
+    }, function(err, data) {
+        console.log(data);
+        if (data.length === 0) {
+            res.render("placeholder", {
+                message: "Nothing has been found. Please try other keywords."
+            });
+        } else {
+            res.render("search", {
+                search: data
+            })
+        }
+    })
+});
+
+app.post("/save/:id", function(req, res) {
+    Article.findById(req.params.id, function(err, data) {
+        if (data.issaved) {
+            Article.findByIdAndUpdate(req.params.id, {
+                $set: {
+                    issaved: false,
+                    status: "Save Article"
+                }
+            }, {
+                new: true
+            }, function(err, data) {
+                res.redirect("/");
+            });
+        } else {
+            Article.findByIdAndUpdate(req.params.id, {
+                $set: {
+                    issaved: true,
+                    status: "Saved"
+                }
+            }, {
+                new: true
+            }, function(err, data) {
+                res.redirect("/saved");
+            });
+        }
     });
 });
 
-// Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+app.post("/note/:id", function(req, res) {
+    var note = new Note(req.body);
+    note.save(function(err, doc) {
+        if (err) throw err;
+        Article.findByIdAndUpdate(req.params.id, {
+            $set: {
+                "note": doc._id
+            }
+        }, {
+            new: true
+        }, function(err, newdoc) {
+            if (err) throw err;
+            else {
+                res.send(newdoc);
+            }
+        });
+    });
 });
+
+app.get("/note/:id", function(req, res) {
+    var id = req.params.id;
+    Article.findById(id).populate("note").exec(function(err, data) {
+        res.send(data.note);
+    })
+})
+
+// ==================================
+app.listen(port, function() {
+  console.log("Listening on port " + port);
+})
