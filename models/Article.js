@@ -10,12 +10,12 @@ var ArticleSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	summary: {
+	/*summary: {
 		type: String,
 		default: "Summary unavailable."
-	},
+	},*/
 	img: {
-		type: String,
+		type: Array,
 		default: "/assets/images/unavailable.jpg"
 	},
 	isSaved: {

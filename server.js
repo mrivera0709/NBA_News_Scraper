@@ -1,7 +1,7 @@
 // ==================================
 // Dependencies
 var express = require("express");
-var method = require("method-override");
+//var method = require("method-override");
 var body = require("body-parser");
 var exphbs = require("express-handlebars");
 var mongoose = require("mongoose");
@@ -14,6 +14,11 @@ var request = require("request");
 var Note = require("./models/Note");
 var Article = require("./models/Article");
 var databaseUrl = 'mongodb://localhost/nba';
+
+// ==================================
+// base64 decoder
+var base64ToImage = require('base64-to-image');
+;
 
 if (process.env.MONGODB_URI) {
     mongoose.connect(process.env.MONGODB_URI);
@@ -32,7 +37,6 @@ db.once("open", function() {
     console.log("Mongoose connection successful.");
 });
 
-
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -43,7 +47,7 @@ app.use(express.static("public"));
 app.use(body.urlencoded({
     extended: false
 }));
-app.use(method("_method"));
+//app.use(method("_method"));
 app.engine("handlebars", exphbs({
     defaultLayout: "main"
 }));
@@ -59,7 +63,7 @@ app.get("/", function(req, res) {
     }, function(err, data) {
         if (data.length === 0) {
             res.render("placeholder", {
-                message: "There's nothing scraped yet. Please click \"Scrape For Newest Articles\" for fresh and delicious news."
+                message: "There's nothing scraped yet. Please click \"Scrape for the latest NBA News\" from SBNation.com."
             });
         } else {
             res.render("index", {
@@ -70,24 +74,28 @@ app.get("/", function(req, res) {
 });
 
 app.get("/scrape", function(req, res) {
-    request("https://www.nytimes.com/section/world", function(error, response, html) {
+    request("https://www.sbnation.com/nba-news-basketball/archives", function(error, response, html) {
         var $ = cheerio.load(html);
         var result = {};
-        $("div.story-body").each(function(i, element) {
+        $("div.c-entry-box--compact").each(function(i, element) {
             var link = $(element).find("a").attr("href");
-            var title = $(element).find("h2.headline").text().trim();
-            var summary = $(element).find("p.summary").text().trim();
-            var img = $(element).parent().find("figure.media").find("img").attr("src");
+            var title = $(element).find("h2.c-entry-box--compact__title").text().trim();
+            var imgTitle = $(element).attr("data-analytics-placement");
+            var img = $(element).children("a").find("img.c-dynamic-image").attr("src");
             result.link = link;
             result.title = title;
-            if (summary) {
-                result.summary = summary;
-            };
-            if (img) {
+
+            var base64Str = img;
+            var path ='/assets/images';
+            var optionalObj = {'type':'png'};
+            var image = base64ToImage(base64Str,path,optionalObj);
+
+            result.img = image;
+            /*if (img) {
                 result.img = img;
             } else {
-                result.img = $(element).find(".wide-thumb").find("img").attr("src");
-            };
+                result.img = $(element).find(".lazy-image").find("img").attr("src");
+            };*/
             var entry = new Article(result);
             Article.find({
                 title: result.title
@@ -107,7 +115,7 @@ app.get("/scrape", function(req, res) {
 
 app.get("/saved", function(req, res) {
     Article.find({
-        issaved: true
+        isSaved: true
     }, null, {
         sort: {
             created: -1
@@ -158,10 +166,10 @@ app.post("/search", function(req, res) {
 
 app.post("/save/:id", function(req, res) {
     Article.findById(req.params.id, function(err, data) {
-        if (data.issaved) {
+        if (data.isSaved) {
             Article.findByIdAndUpdate(req.params.id, {
                 $set: {
-                    issaved: false,
+                    isSaved: false,
                     status: "Save Article"
                 }
             }, {
@@ -172,7 +180,7 @@ app.post("/save/:id", function(req, res) {
         } else {
             Article.findByIdAndUpdate(req.params.id, {
                 $set: {
-                    issaved: true,
+                    isSaved: true,
                     status: "Saved"
                 }
             }, {
@@ -212,5 +220,5 @@ app.get("/note/:id", function(req, res) {
 
 // ==================================
 app.listen(port, function() {
-  console.log("Listening on port " + port);
+    console.log("Listening on port " + port);
 })

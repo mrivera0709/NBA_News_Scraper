@@ -18,12 +18,15 @@
   },
   "homepage": "https://github.com/mrivera0709/NBA_News_Scraper#readme",
   "dependencies": {
+    "base64-to-image": "^1.0.2",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
+    "install": "^0.10.2",
     "mongoose": "^4.13.6",
     "morgan": "^1.9.0",
+    "npm": "^5.6.0",
     "request": "^2.83.0"
   }
 }
