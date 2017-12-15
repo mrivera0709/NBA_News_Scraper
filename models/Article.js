@@ -15,8 +15,8 @@ var ArticleSchema = new Schema({
 		default: "Summary unavailable."
 	},*/
 	img: {
-		type: Array,
-		default: "/assets/images/unavailable.jpg"
+		type: String,
+		default: "/assets/images/unavailable.png"
 	},
 	isSaved: {
 		type: Boolean,

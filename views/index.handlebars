@@ -1,18 +1,38 @@
 {{#each articles}}
-  <div class="story-body" id={{this._id}}>
-    <h2>
-      <a href="{{this.link}}" target="_blank">{{this.title}}</a>
-      <form action="/save/{{this._id}}" method="POST">
-        <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-        {{#unless this.note}}
-          <button type="button" class="addnote-button" value="{{this._id}}">Add A Note</button>
-        {{/unless}}
-        {{#if this.note}}
-          <button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
-        {{/if}}
-      </form>
-    </h2>
-    <!-- <summary>{{this.summary}}</summary> -->
-    <img class="c-dynamic-image" src="{{this.img}}">
-  </div>
+  
+    <div class="story-body" id={{this._id}}>
+      <div class="row">
+        <div class="col s2">
+          <img class="c-dynamic-image" src="{{this.img}}">
+        </div>
+        <div class="col s10">
+          <h2>
+            
+
+            <a class="headline" href="{{this.link}}" target="_blank">{{this.title}}</a>
+
+            <form action="/save/{{this._id}}" method="POST">
+
+              <button type="submit" class="status" value="{{this.status}}"> 
+                {{this.status}} 
+              </button>
+
+              {{#unless this.note}}
+                <button type="button" class="addnote-button" value="{{this._id}}">
+                  Add A Note 
+                </button>
+              {{/unless}}
+
+              {{#if this.note}}
+                <button type="button" class="addnote-button" value="{{this._id}}"> 
+                  Edit Note 
+                </button>
+              {{/if}}
+
+            </form>
+          </h2>
+        <!-- <summary>{{this.summary}}</summary> -->
+        </div>
+      </div>
+    </div>
 {{/each}}

@@ -80,18 +80,20 @@ app.get("/scrape", function(req, res) {
         $("div.c-entry-box--compact").each(function(i, element) {
             var link = $(element).find("a").attr("href");
             var title = $(element).find("h2.c-entry-box--compact__title").text().trim();
-            var imgTitle = $(element).attr("data-analytics-placement");
-            var img = $(element).children("a").find("img.c-dynamic-image").attr("src");
+            var imgTitle = $(element).attr("data-chorus-optimize-id");
+            var img = //$(element).children("a").find("img.c-dynamic-image").attr("src");
+            console.log(img);
             result.link = link;
             result.title = title;
-
-            var base64Str = img;
+            result.img = img;
+            //Base64 decoder - under construction
+            /*var base64Str = img;
             var path ='/assets/images';
-            var optionalObj = {'type':'png'};
+            var optionalObj = {'filename': imgTitle, 'type':'png'};
             var image = base64ToImage(base64Str,path,optionalObj);
 
-            result.img = image;
-            /*if (img) {
+            result.img = path +"/" + imgTitle + ".png";
+            if (img) {
                 result.img = img;
             } else {
                 result.img = $(element).find(".lazy-image").find("img").attr("src");

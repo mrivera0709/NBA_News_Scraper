@@ -2,33 +2,53 @@
 <html lang="en">
 
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Fjalla+One|Libre+Franklin|Sedgwick+Ave" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>NBA News Scraper</title>
 </head>
 
-<body>
+<body id="cover">
     <header>
+        <nav class="blue-grey darken-4">
+          <div class="nav-wrapper container blue-grey darken-4">
+            <a href="/" class="brand-logo siteName">NBA News <span id=scraper>Scraper</span></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a href="/"  id="all-articles">VIEW ALL</a></li>
+              <li><a href="/saved" id="saved-articles">VIEW SAVED</a></li>
+              <li>
+                <form action="/scrape" method="GET">
+                  <button class="waves-effect waves-grey btn-flat" id="refresh-articles" type="submit">SCRAPE NEWS</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      <!--
+      <div class="row menu">
         <a href="/">
-          <div id="siteName">NBA News Scraper</div>
+          <div id="siteName">NBA News <span id=scraper>Scraper</span></div>
         </a>
         <a href="/">
-           <button id="all-articles">All Articles</button>
+          <button class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large" id="all-articles">All Articles</button>
         </a>
         <a href="/saved">
-          <button id="saved-articles">Saved Articles</button>
+          <button class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large" id="saved-articles">Saved Articles</button>
         </a>
         <form action="/scrape" method="GET">
-          <button type="submit" id="refresh-articles">Scrape For Newest Articles</button>
-        </form>
-        <form action="/search" method="POST">
-          <button type="submit" id="search-submit">Submit</button>
+          <button type="submit" id="refresh-articles" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Scrape For Newest Articles</button>
+        </form> //-->
+        <form action="/search" method="POST" class="container">
+          <button type="submit" id="search-submit" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Submit</button>
           <input type="text" name="search" placeholder="Search for articles" id="search-input">
         </form>
+      </div>
     </header>
-    <img id="cover"<!-- src="/assets/images/cover.jpg" -->>
-    <div id="container">
+    
+    <div class="container">
         {{{ body }}}
     </div>
 
@@ -55,6 +75,8 @@
 
     <footer>© Copyright 2017 Misael Rivera</footer>
     <script src="/assets/js/app.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </body>
 
 </html>
