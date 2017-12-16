@@ -36,18 +36,18 @@ body {
 .c-dynamic-image {
   width:150px;
   vertical-align:middle;
-  
 }
 
 .story-body {
   background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.1));
   padding:20px;
+  margin-bottom:10px;
 }
 
 .headline {
   color:white;
   font-family: 'Libre Franklin', sans-serif;
-  font-size: 40px;
+  font-size: 30px;
 }
 
 h2 {

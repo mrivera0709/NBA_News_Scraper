@@ -3,6 +3,7 @@
 
 <head>
     <link href="https://fonts.googleapis.com/css?family=Archivo+Black|Fjalla+One|Libre+Franklin|Sedgwick+Ave" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <meta charset="UTF-8">
@@ -13,8 +14,10 @@
 
 <body id="cover">
     <header>
-        <nav class="blue-grey darken-4">
+      <div class="navbar-fixed">
+        <nav class="blue-grey darken-4 ">
           <div class="nav-wrapper container blue-grey darken-4">
+            <a href="/" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <a href="/" class="brand-logo siteName">NBA News <span id=scraper>Scraper</span></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               <li><a href="/"  id="all-articles">VIEW ALL</a></li>
@@ -25,8 +28,19 @@
                 </form>
               </li>
             </ul>
+            <ul class="side-nav" id="mobile-demo">
+              <li><a href="/"  id="all-articles">VIEW ALL</a></li>
+              <li><a href="/saved" id="saved-articles">VIEW SAVED</a></li>
+              <li>
+                <form action="/scrape" method="GET">
+                  <button class="waves-effect waves-grey btn-flat" id="refresh-articles" type="submit">SCRAPE NEWS</button>
+                </form>
+              </li>
+            </ul>
           </div>
         </nav>
+      </div>
+        <br>
       <!--
       <div class="row menu">
         <a href="/">
@@ -41,10 +55,12 @@
         <form action="/scrape" method="GET">
           <button type="submit" id="refresh-articles" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Scrape For Newest Articles</button>
         </form> //-->
-        <form action="/search" method="POST" class="container">
-          <button type="submit" id="search-submit" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Submit</button>
-          <input type="text" name="search" placeholder="Search for articles" id="search-input">
-        </form>
+        <div class="row">
+          <form action="/search" method="POST" class="container">
+            <input type="text" name="search" placeholder="Search for articles" id="search-input">
+            <button type="submit" id="search-submit" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Submit</button>
+          </form>
+        </div>
       </div>
     </header>
     
@@ -77,6 +93,11 @@
     <script src="/assets/js/app.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+      $( document ).ready(function(){
+        $(".button-collapse").sideNav();
+      })
+    </script>
 </body>
 
 </html>

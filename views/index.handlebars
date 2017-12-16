@@ -1,30 +1,29 @@
 {{#each articles}}
   
-    <div class="story-body" id={{this._id}}>
-      <div class="row">
-        <div class="col s2">
-          <img class="c-dynamic-image" src="{{this.img}}">
+    <div class="story-body hoverable" id={{this._id}}>
+      <div class="row valign-wrapper">
+        <div class="col s2 valign-wrapper">
+          <img class="c-dynamic-image valign-wrapper responsive-img" src="{{this.img}}">
         </div>
         <div class="col s10">
           <h2>
-            
 
-            <a class="headline" href="{{this.link}}" target="_blank">{{this.title}}</a>
+            <a class="headline flow-text" href="{{this.link}}" target="_blank">{{this.title}}</a>
 
             <form action="/save/{{this._id}}" method="POST">
 
-              <button type="submit" class="status" value="{{this.status}}"> 
+              <button type="submit" class="status waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this.status}}"> 
                 {{this.status}} 
               </button>
 
               {{#unless this.note}}
-                <button type="button" class="addnote-button" value="{{this._id}}">
+                <button type="button" class="addnote-button waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this._id}}">
                   Add A Note 
                 </button>
               {{/unless}}
 
               {{#if this.note}}
-                <button type="button" class="addnote-button" value="{{this._id}}"> 
+                <button type="button" class="addnote-button waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this._id}}"> 
                   Edit Note 
                 </button>
               {{/if}}
