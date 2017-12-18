@@ -63,7 +63,7 @@ app.get("/", function(req, res) {
     }, function(err, data) {
         if (data.length === 0) {
             res.render("placeholder", {
-                message: "There's nothing scraped yet. Please click \"Scrape for the latest NBA News\" from SBNation.com."
+                message: "Welcome to NBA News Scraper. To scrape the latest articles from SBNation.com, please click \"SCRAPE NEWS\" in the menu"
             });
         } else {
             res.render("index", {
@@ -86,18 +86,7 @@ app.get("/scrape", function(req, res) {
             result.link = link;
             result.title = title;
             result.img = img;
-            //Base64 decoder - under construction
-            /*var base64Str = img;
-            var path ='/assets/images';
-            var optionalObj = {'filename': imgTitle, 'type':'png'};
-            var image = base64ToImage(base64Str,path,optionalObj);
 
-            result.img = path +"/" + imgTitle + ".png";
-            if (img) {
-                result.img = img;
-            } else {
-                result.img = $(element).find(".lazy-image").find("img").attr("src");
-            };*/
             var entry = new Article(result);
             Article.find({
                 title: result.title
@@ -125,7 +114,7 @@ app.get("/saved", function(req, res) {
     }, function(err, data) {
         if (data.length === 0) {
             res.render("placeholder", {
-                message: "You have not saved any articles yet. Try to save some delicious news by simply clicking \"Save Article\"!"
+                message: "You have not saved any articles yet. To save a scraped article from SBNation.com, simply click \"Save Article\"!"
             });
         } else {
             res.render("saved", {

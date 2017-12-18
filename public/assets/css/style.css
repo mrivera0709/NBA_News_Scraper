@@ -57,6 +57,13 @@ main {
   font-size: 30px;
 }
 
+#instructions {
+  color:white;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 50px;
+  line-height:75px;
+}
+
 h2 {
 
 }
