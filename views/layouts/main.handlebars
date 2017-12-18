@@ -14,9 +14,9 @@
 
 <body id="cover">
     <header>
-      <div class="navbar-fixed">
-        <nav class="blue-grey darken-4 ">
-          <div class="nav-wrapper container blue-grey darken-4">
+      <div class="navbar-fixed hoverable">
+        <nav class="grey darken-3 ">
+          <div class="nav-wrapper container grey darken-3">
             <a href="/" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <a href="/" class="brand-logo siteName">NBA News <span id=scraper>Scraper</span></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -58,19 +58,20 @@
         <div class="row">
           <form action="/search" method="POST" class="container">
             <input type="text" name="search" placeholder="Search for articles" id="search-input">
-            <button type="submit" id="search-submit" class="menuButtons waves-effect waves-light btn blue-grey darken-4 btn-large">Submit</button>
+            <button type="submit" id="search-submit" class="menuButtons waves-effect waves-light btn grey darken-3 btn-large hoverable">Submit</button>
           </form>
         </div>
       </div>
     </header>
-    
+
+    <main>
     <div class="container">
         {{{ body }}}
     </div>
 
     <script src="/assets/js/app.js"></script>
 
-    <div id="addnote">
+    <!-- <div id="addnote">
       <div id="note-displayer">
         <h2>Note</h2>
         <h3>Article: <span id="article-title"></span></h3>
@@ -87,15 +88,52 @@
           <button type="button" id="close-note">Cancel</button>
         </div>
       </div>
-    </div>
+    </div> /-->
 
-    <footer>© Copyright 2017 Misael Rivera</footer>
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <div id="addnote">
+        <div id="note-displayer">
+          <h2 class="noteHeader">Note</h2>
+          <div class="row">
+            <div id="note col s12">
+              <label for="note-title">Title</label>
+              <br>
+              <input type="text" placeholder="Title" name="title" id="note-title">
+              <br>
+              <label for="note-body">Note</label>
+              <br>
+              <div class=".input-field">
+                <textarea rows="7" placeholder="Note" id="note-body"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+
+      <button class="modal-action modal-close waves-effect waves-grey btn-flat" type="submit" id="add-note">Save Note</button>
+      <button class="modal-action modal-close waves-effect waves-grey btn-flat"type="button" id="close-note">Cancel</button>
+
+    </div>
+  </div>
+  </main>
+    <footer class="page-footer grey darken-3">
+      <div class="footer-copyright">
+        <div class="container grey darken-3">
+          © Copyright 2017 Misael Rivera
+        </div>
+      </div>
+    </footer>
+
     <script src="/assets/js/app.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
       $( document ).ready(function(){
         $(".button-collapse").sideNav();
+        $('.modal').modal();
       })
     </script>
 </body>

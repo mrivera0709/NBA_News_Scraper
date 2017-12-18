@@ -2,8 +2,8 @@
   
     <div class="story-body hoverable" id={{this._id}}>
       <div class="row valign-wrapper">
-        <div class="col s2 valign-wrapper">
-          <img class="c-dynamic-image valign-wrapper responsive-img" src="{{this.img}}">
+        <div class="col s2 valign-wrapper hide-on-small-only">
+          <img class="c-dynamic-image valign-wrapper responsive-img hide-on-small-only" src="{{this.img}}">
         </div>
         <div class="col s10">
           <h2>
@@ -12,18 +12,18 @@
 
             <form action="/save/{{this._id}}" method="POST">
 
-              <button type="submit" class="status waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this.status}}"> 
+              <button type="submit" class="status waves-effect waves-light btn grey darken-3 btn-large" value="{{this.status}}"> 
                 {{this.status}} 
               </button>
 
               {{#unless this.note}}
-                <button type="button" class="addnote-button waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this._id}}">
+                <button type="button" class="addnote-button waves-effect waves-light btn grey darken-3 btn-large modal-trigger" href="#modal1" value="{{this._id}}">
                   Add A Note 
                 </button>
               {{/unless}}
 
               {{#if this.note}}
-                <button type="button" class="addnote-button waves-effect waves-light btn blue-grey darken-4 btn-large" value="{{this._id}}"> 
+                <button type="button" class="addnote-button waves-effect waves-light btn grey darken-3 btn-large" value="{{this._id}}"> 
                   Edit Note 
                 </button>
               {{/if}}
