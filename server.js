@@ -13,7 +13,7 @@ var request = require("request");
 // Mongoose
 var Note = require("./models/Note");
 var Article = require("./models/Article");
-var databaseUrl = 'mongodb://localhost/nba';
+var databaseUrl = 'mongodb://localhost:27017/nba';
 
 // ==================================
 // base64 decoder
