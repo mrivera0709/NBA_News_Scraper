@@ -1,5 +1,4 @@
 {{#each articles}}
-  
     <div class="story-body hoverable" id={{this._id}}>
       <div class="row valign-wrapper">
         <div class="col s2 valign-wrapper hide-on-small-only">
@@ -23,14 +22,13 @@
               {{/unless}}
 
               {{#if this.note}}
-                <button type="button" class="addnote-button waves-effect waves-light btn grey darken-3 btn-large" value="{{this._id}}"> 
+                <button type="button" class="addnote-button waves-effect waves-light btn grey darken-3 btn-large" href="#modal1" value="{{this._id}}"> 
                   Edit Note 
                 </button>
               {{/if}}
 
             </form>
           </h2>
-        <!-- <summary>{{this.summary}}</summary> -->
         </div>
       </div>
     </div>

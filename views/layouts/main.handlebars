@@ -13,12 +13,17 @@
 </head>
 
 <body id="cover">
+
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+<!-- NAVBAR                      -->
+
     <header>
       <div class="navbar-fixed hoverable">
         <nav class="grey darken-3 ">
           <div class="nav-wrapper container grey darken-3">
             <a href="/" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <a href="/" class="brand-logo siteName">NBA News <span id=scraper>Scraper</span></a>
+  <!-- Standard Navbar -->
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               <li><a href="/"  id="all-articles">VIEW ALL</a></li>
               <li><a href="/saved" id="saved-articles">VIEW SAVED</a></li>
@@ -28,6 +33,7 @@
                 </form>
               </li>
             </ul>
+  <!-- Mobile Navbar -->
             <ul class="side-nav" id="mobile-demo">
               <li><a href="/"  id="all-articles">VIEW ALL</a></li>
               <li><a href="/saved" id="saved-articles">VIEW SAVED</a></li>
@@ -41,7 +47,10 @@
         </nav>
       </div>
         <br>
+<!-- /////////////////////////// -->
 
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+<!-- SEARCH                      -->
         <div class="row">
           <form action="/search" method="POST" class="container">
             <input type="text" name="search" placeholder="Search for articles" id="search-input">
@@ -50,24 +59,32 @@
         </div>
       </div>
     </header>
+<!-- /////////////////////////// -->
 
-    <main>
-    <div class="container">
-        {{{ body }}}
-    </div>
+<main>
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+<!-- HANDLEBARS - BODY           -->
+  <div class="container">
+    {{{ body }}}
+  </div>
+<!-- /////////////////////////// -->
 
-    <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/app.js"></script>
 
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+<!-- NOTES MODAL                 -->
   <div id="modal1" class="modal modal-fixed-footer">
     <div class="modal-content">
-      <div id="addnote">
+      <div id="addnote" style=display:inline>
         <div id="note-displayer">
           <h2 class="noteHeader">Note</h2>
           <div class="row">
             <div id="note col s12">
-              <label for="note-title">Title</label>
-              <br>
-              <input type="text" placeholder="Title" name="title" id="note-title">
+              
+              <div class="input-field col s6">
+                <input placeholder="Enter a Title here" name="title" id="note-title" type="text" class="validate">
+                <label for="first_name">Note Title</label>
+              </div>
               <br>
               <label for="note-body">Note</label>
               <br>
@@ -86,7 +103,11 @@
 
     </div>
   </div>
-  </main>
+<!-- /////////////////////////// -->
+</main>
+
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+<!-- FOOTER                      -->
     <footer class="page-footer grey darken-3">
       <div class="footer-copyright">
         <div class="container grey darken-3">
@@ -94,6 +115,8 @@
         </div>
       </div>
     </footer>
+  </div>
+<!-- /////////////////////////// -->
 
     <script src="/assets/js/app.js"></script>
     <!-- Compiled and minified JavaScript -->

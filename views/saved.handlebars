@@ -1,13 +1,20 @@
 {{#each saved}}
-  <div class="story-body" id={{this._id}}>
-    <h2>
-      <a href="{{this.link}}" target="_blank">{{this.title}}</a>
-      <form action="/save/{{this._id}}" method="POST">
-        <button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-        <button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
-      </form>
-    </h2>
-    <summary>{{this.summary}}</summary>
-    <img class="media" src="{{this.img}}">
+  <div class="story-body hoverable" id={{this._id}}>
+    <div class="row valign-wrapper">
+      <div class="col s2 valign-wrapper hide-on-small-only">
+        <img class="c-dynamic-image valign-wrapper responsive-img hide-on-small-only" src="{{this.img}}">
+      </div>
+      <div class="col s10">
+        <h2>
+          <a class="headline flow-text" href="{{this.link}}" target="_blank">{{this.title}}</a>
+          <form action="/save/{{this._id}}" method="POST">
+            
+            <button type="submit" class="status waves-effect waves-light btn grey darken-3 btn-large modal-trigger" value="{{this.status}}">{{this.status}}</button>
+
+            <button type="button" class="addnote-button waves-effect waves-light btn grey darken-3 btn-large modal-trigger" href="#modal1" value="{{this._id}}">Edit Note</button>
+          </form>
+        </h2>
+      </div> 
+    </div>
   </div>
 {{/each}}
