@@ -71,3 +71,11 @@ h2 {
 .noteHeader {
   color:grey;
 } 
+
+#addnote {
+  display:block !important;
+}
+
+#note-title, textarea {
+  color:grey;
+}
